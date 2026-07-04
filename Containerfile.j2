@@ -1,0 +1,66 @@
+# Immich Public Proxy — FreeBSD daemonless image
+# Stateless reverse proxy that resolves Immich *public share links* only.
+# Upstream: https://github.com/alangrainger/immich-public-proxy (AGPL-3.0)
+
+ARG BASE_VERSION=15
+ARG IPP_VERSION=v3.0.1
+
+# ==========================================================================
+# Stage 1: Builder — compile server + client TypeScript (node22, no native deps)
+# ==========================================================================
+FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
+ARG IPP_VERSION
+
+RUN pkg update && pkg install -y node22 npm-node22 git-lite && pkg clean -ay
+
+WORKDIR /build
+RUN git clone --depth 1 --branch ${IPP_VERSION} \
+    https://github.com/alangrainger/immich-public-proxy.git .
+
+# The npm project root is app/, not the repo root.
+WORKDIR /build/app
+RUN npm ci && npx tsc && npx tsc -p tsconfig.client.json
+
+# Production-only node_modules (all 8 deps are pure JS - no native addons).
+RUN npm ci --omit=dev
+
+# ==========================================================================
+# Stage 2: Runtime
+# ==========================================================================
+FROM ghcr.io/daemonless/base:${BASE_VERSION}
+ARG FREEBSD_ARCH=amd64
+ARG IPP_VERSION
+ARG PACKAGES="node22"
+
+LABEL org.opencontainers.image.title="Immich Public Proxy" \
+      org.opencontainers.image.description="Share Immich photos and albums publicly without exposing the Immich instance itself." \
+      org.opencontainers.image.source="https://github.com/daemonless/immich-public-proxy" \
+      org.opencontainers.image.url="https://github.com/alangrainger/immich-public-proxy" \
+      org.opencontainers.image.licenses="AGPL-3.0" \
+      org.opencontainers.image.vendor="daemonless" \
+      org.opencontainers.image.authors="daemonless" \
+      io.daemonless.category="Photos & Media" \
+      io.daemonless.port="3000" \
+      io.daemonless.healthcheck-url="http://localhost:3000/healthcheck" \
+      io.daemonless.arch="${FREEBSD_ARCH}" \
+      io.daemonless.packages="${PACKAGES}"
+
+RUN pkg update && pkg install -y ${PACKAGES} && \
+    mkdir -p /app && \
+    pkg clean -ay && rm -rf /var/cache/pkg/* /var/db/pkg/repos/*
+
+# Built app + production node_modules from the builder stage.
+COPY --from=builder --chown=bsd:bsd /build/app /app
+
+# Builder-stage COPY/npm lands as root:wheel with a restrictive umask; the
+# unprivileged bsd runtime user needs to read+traverse it.
+RUN chmod -R a+rX /app && echo "${IPP_VERSION}" > /app/version
+
+# s6 service + healthz
+COPY root/ /
+RUN chmod +x /etc/services.d/immich-public-proxy/run /healthz
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+EXPOSE 3000

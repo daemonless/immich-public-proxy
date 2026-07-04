@@ -1,0 +1,20 @@
+# dbuild configuration file
+# Place in .daemonless/config.yaml or .dbuild.yaml (higher priority)
+#
+# Full reference: https://github.com/daemonless/dbuild
+
+build:
+  variants:
+    - tag: latest
+      containerfile: Containerfile
+
+cit:
+  mode: health
+  port: 3000
+  # "/" serves the home page (200) with no Immich behind us; /healthcheck would
+  # 503 in CIT because it pings the (absent) Immich instance.
+  health: /
+  # IPP's startup line — none of dbuild's default ready patterns match it,
+  # which otherwise costs the full 120s wait every test run.
+  ready: "Server started on port"
+  

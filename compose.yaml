@@ -1,0 +1,37 @@
+name: immich-public-proxy
+
+x-daemonless:
+  title: "Immich Public Proxy"
+  icon: ":material-image-multiple-outline:"  # https://pictogrammers.com/library/mdi/ (material-) or https://simpleicons.org/ (simple-)
+  category: "Photos & Media"
+  description: "Share Immich photos and albums publicly without exposing the Immich instance itself."
+  upstream_url: "https://github.com/daemonless/immich-public-proxy"
+  web_url: "https://github.com/alangrainger/immich-public-proxy"
+  freshports_url: ""
+  user: "bsd"
+  mlock: false
+  appjail: true
+  notes: "This image is part of the [Immich Stack](https://daemonless.io/images/immich)."
+
+  docs:
+    env:
+      IMMICH_URL: "URL of your (private) Immich instance, e.g. http://immich-server:2283"
+      PUBLIC_BASE_URL: "Public base URL this proxy is served from, no trailing slash (optional - derived from the request hostname if unset)"
+      IPP_PORT: "Internal webserver port (default 3000)"
+      TZ: "Timezone for the container"
+    ports:
+      3000: "Web UI"
+
+services:
+  immich-public-proxy:
+    image: ghcr.io/daemonless/immich-public-proxy:latest
+    container_name: immich-public-proxy
+    restart: unless-stopped
+
+    environment:
+      - IMMICH_URL=http://your-internal-immich-server:2283
+      - PUBLIC_BASE_URL=https://your-proxy-url.com
+      - TZ=UTC
+
+    ports:
+      - 3000:3000

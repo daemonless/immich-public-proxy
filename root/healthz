@@ -1,0 +1,19 @@
+#!/bin/sh
+# Daemonless standard healthcheck for immich-public-proxy
+
+if [ -n "${IMMICH_URL:-}" ]; then
+    # Production (IMMICH_URL set): upstream's real health endpoint — 200 only
+    # when the backing Immich instance is reachable (503 otherwise, by design).
+    if fetch -o /dev/null "http://127.0.0.1:${IPP_PORT:-3000}/healthcheck" >/dev/null 2>&1; then
+        exit 0
+    else
+        exit 1
+    fi
+else
+    # No Immich configured (e.g. CIT): healthy means the server is listening.
+    if nc -z 127.0.0.1 "${IPP_PORT:-3000}" >/dev/null 2>&1; then
+        exit 0
+    else
+        exit 1
+    fi
+fi
