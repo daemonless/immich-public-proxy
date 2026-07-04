@@ -1,0 +1,7 @@
+#!/bin/sh
+# Immich Public Proxy — stateless proxy for Immich public share links.
+# Boots and listens on :3000 regardless of whether IMMICH_URL is reachable
+# (only /healthcheck pings Immich, lazily, per request).
+cd /app || exit 1
+echo "[INFO] Starting immich-public-proxy on 0.0.0.0:${IPP_PORT:-3000}..."
+exec s6-setuidgid bsd node dist/index.js
