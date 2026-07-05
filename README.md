@@ -13,7 +13,7 @@ Share Immich photos and albums publicly without exposing the Immich instance its
 | | |
 |---|---|
 | **Port** | 3000 |
-| **Registry** | `ghcr.io/jtrotsky/immich-public-proxy` |
+| **Registry** | `ghcr.io/daemonless/immich-public-proxy` |
 | **Source** | [https://github.com/alangrainger/immich-public-proxy](https://github.com/alangrainger/immich-public-proxy) |
 | **Website** | [https://github.com/alangrainger/immich-public-proxy](https://github.com/alangrainger/immich-public-proxy) |
 
@@ -32,7 +32,7 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 ```yaml
 services:
   immich-public-proxy:
-    image: "ghcr.io/jtrotsky/immich-public-proxy:latest"
+    image: "ghcr.io/daemonless/immich-public-proxy:latest"
     container_name: immich-public-proxy
     environment:
       - IMMICH_URL=http://your-internal-immich-server:2283  # URL of your (private) Immich instance, e.g. http://immich-server:2283
@@ -88,7 +88,7 @@ services:
 ARG tag=latest
 
 OPTION overwrite=force
-OPTION from=ghcr.io/jtrotsky/immich-public-proxy:${tag}
+OPTION from=ghcr.io/daemonless/immich-public-proxy:${tag}
 ```
 **Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
@@ -101,7 +101,7 @@ podman run -d --name immich-public-proxy \
   -e PUBLIC_BASE_URL=https://your-proxy-url.com \
   -e TZ=UTC \
   -e IPP_PORT= \
-  ghcr.io/jtrotsky/immich-public-proxy:latest
+  ghcr.io/daemonless/immich-public-proxy:latest
 ```
 
 ### AppJail
@@ -117,7 +117,7 @@ appjail oci run -Pd \
   -e PUBLIC_BASE_URL=https://your-proxy-url.com \
   -e TZ=UTC \
   -e IPP_PORT= \
-  ghcr.io/jtrotsky/immich-public-proxy:latest immich-public-proxy
+  ghcr.io/daemonless/immich-public-proxy:latest immich-public-proxy
 ```
 **Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
@@ -127,7 +127,7 @@ appjail oci run -Pd \
 - name: Deploy immich-public-proxy
   containers.podman.podman_container:
     name: immich-public-proxy
-    image: "ghcr.io/jtrotsky/immich-public-proxy:latest"
+    image: "ghcr.io/daemonless/immich-public-proxy:latest"
     state: started
     restart_policy: always
     env:
@@ -163,3 +163,7 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 **Architectures:** amd64
 **User:** `bsd` (UID/GID via PUID/PGID, defaults to 1000:1000)
 **Base:** FreeBSD 15
+
+---
+
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.
