@@ -4,8 +4,9 @@ x-daemonless:
   title: "Immich Public Proxy"
   icon: ":material-image-multiple-outline:"  # https://pictogrammers.com/library/mdi/ (material-) or https://simpleicons.org/ (simple-)
   category: "Photos & Media"
+  class: "service"
   description: "Share Immich photos and albums publicly without exposing the Immich instance itself."
-  upstream_url: "https://github.com/daemonless/immich-public-proxy"
+  upstream_url: "https://github.com/alangrainger/immich-public-proxy"
   web_url: "https://github.com/alangrainger/immich-public-proxy"
   freshports_url: ""
   user: "bsd"

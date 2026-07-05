@@ -13,18 +13,16 @@ Share Immich photos and albums publicly without exposing the Immich instance its
 | | |
 |---|---|
 | **Port** | 3000 |
-| **Registry** | `ghcr.io/daemonless/immich-public-proxy` |
-| **Source** | [https://github.com/daemonless/immich-public-proxy](https://github.com/daemonless/immich-public-proxy) |
+| **Registry** | `ghcr.io/jtrotsky/immich-public-proxy` |
+| **Source** | [https://github.com/alangrainger/immich-public-proxy](https://github.com/alangrainger/immich-public-proxy) |
 | **Website** | [https://github.com/alangrainger/immich-public-proxy](https://github.com/alangrainger/immich-public-proxy) |
 
 ## Version Tags
-
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
 | `latest` | **Upstream Binary**. Built from official release. | Most users. Matches Linux Docker behavior. |
 
 ## Prerequisites
-
 Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
 
 ## Deployment
@@ -34,31 +32,36 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 ```yaml
 services:
   immich-public-proxy:
-    image: "ghcr.io/daemonless/immich-public-proxy:latest"
+    image: "ghcr.io/jtrotsky/immich-public-proxy:latest"
     container_name: immich-public-proxy
     environment:
       - IMMICH_URL=http://your-internal-immich-server:2283  # URL of your (private) Immich instance, e.g. http://immich-server:2283
       - PUBLIC_BASE_URL=https://your-proxy-url.com  # Public base URL this proxy is served from, no trailing slash (optional - derived from the request hostname if unset)
       - TZ=UTC  # Timezone for the container
+      - IPP_PORT=  # Internal webserver port (default 3000)
     ports:
       - "3000:3000"
     restart: unless-stopped
 ```
 
 ### AppJail Director
-
 **.env**:
 
 ```
+# .env
+
 DIRECTOR_PROJECT=immich-public-proxy
 IMMICH_URL=http://your-internal-immich-server:2283
 PUBLIC_BASE_URL=https://your-proxy-url.com
 TZ=UTC
+IPP_PORT=
 ```
 
 **appjail-director.yml**:
 
 ```yaml
+# appjail-director.yml
+
 options:
   - virtualnet: ':<random> default'
   - nat:
@@ -67,22 +70,27 @@ services:
     name: immich_public_proxy
     options:
       - container: 'boot args:--pull'
+      - expose: '3000:3000 proto:tcp' \
     oci:
       user: root
       environment:
         - IMMICH_URL: !ENV '${IMMICH_URL}'
         - PUBLIC_BASE_URL: !ENV '${PUBLIC_BASE_URL}'
         - TZ: !ENV '${TZ}'
+        - IPP_PORT: !ENV '${IPP_PORT}'
 ```
 
 **Makejail**:
 
 ```
+# Makejail
+
 ARG tag=latest
 
 OPTION overwrite=force
-OPTION from=ghcr.io/daemonless/immich-public-proxy:${tag}
+OPTION from=ghcr.io/jtrotsky/immich-public-proxy:${tag}
 ```
+**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
 ### Podman CLI
 
@@ -92,8 +100,26 @@ podman run -d --name immich-public-proxy \
   -e IMMICH_URL=http://your-internal-immich-server:2283 \
   -e PUBLIC_BASE_URL=https://your-proxy-url.com \
   -e TZ=UTC \
-  ghcr.io/daemonless/immich-public-proxy:latest
+  -e IPP_PORT= \
+  ghcr.io/jtrotsky/immich-public-proxy:latest
 ```
+
+### AppJail
+
+```bash
+appjail oci run -Pd \
+  -o overwrite=force \
+  -o container="args:--pull" \
+  -o virtualnet=":<random> default" \
+  -o nat \
+  -o expose="3000:3000 proto:tcp" \
+  -e IMMICH_URL=http://your-internal-immich-server:2283 \
+  -e PUBLIC_BASE_URL=https://your-proxy-url.com \
+  -e TZ=UTC \
+  -e IPP_PORT= \
+  ghcr.io/jtrotsky/immich-public-proxy:latest immich-public-proxy
+```
+**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
 ### Ansible
 
@@ -101,13 +127,14 @@ podman run -d --name immich-public-proxy \
 - name: Deploy immich-public-proxy
   containers.podman.podman_container:
     name: immich-public-proxy
-    image: "ghcr.io/daemonless/immich-public-proxy:latest"
+    image: "ghcr.io/jtrotsky/immich-public-proxy:latest"
     state: started
     restart_policy: always
     env:
       IMMICH_URL: "http://your-internal-immich-server:2283"
       PUBLIC_BASE_URL: "https://your-proxy-url.com"
       TZ: "UTC"
+      IPP_PORT: ""
     ports:
       - "3000:3000"
 ```
@@ -123,6 +150,7 @@ Access at: `http://localhost:3000`
 | `IMMICH_URL` | `http://your-internal-immich-server:2283` | URL of your (private) Immich instance, e.g. http://immich-server:2283 |
 | `PUBLIC_BASE_URL` | `https://your-proxy-url.com` | Public base URL this proxy is served from, no trailing slash (optional - derived from the request hostname if unset) |
 | `TZ` | `UTC` | Timezone for the container |
+| `IPP_PORT` | `` | Internal webserver port (default 3000) |
 
 ### Ports
 
@@ -134,8 +162,4 @@ This image is part of the [Immich Stack](https://daemonless.io/images/immich).
 
 **Architectures:** amd64
 **User:** `bsd` (UID/GID via PUID/PGID, defaults to 1000:1000)
-**Base:** FreeBSD 15.0
-
----
-
-Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.
+**Base:** FreeBSD 15
