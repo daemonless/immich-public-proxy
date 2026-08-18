@@ -20,7 +20,7 @@ Share Immich photos and albums publicly without exposing the Immich instance its
 ## Version Tags
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
-| `latest` | **Upstream Binary**. Built from official release. | Most users. Matches Linux Docker behavior. |
+| `latest` | **Upstream Binary**. Built from official release. | Most users — recommended. |
 
 ## Prerequisites
 Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
@@ -70,7 +70,7 @@ services:
     name: immich_public_proxy
     options:
       - container: 'boot args:--pull'
-      - expose: '3000:3000 proto:tcp' \
+      - expose: '3000:3000 proto:tcp'
     oci:
       user: root
       environment:
