@@ -17,7 +17,9 @@ x-daemonless:
   docs:
     env:
       IMMICH_URL: "URL of your (private) Immich instance, e.g. http://immich-server:2283"
-      PUBLIC_BASE_URL: "Public base URL this proxy is served from, no trailing slash (optional - derived from the request hostname if unset)"
+      PUBLIC_BASE_URL:
+        desc: "Public base URL this proxy is served from, no trailing slash (optional - derived from the request hostname if unset)"
+        optional: true
       IPP_PORT: "Internal webserver port (default 3000)"
       TZ: "Timezone for the container"
     ports:

@@ -41,8 +41,11 @@ services:
       - IPP_PORT=  # Internal webserver port (default 3000)
     ports:
       - "3000:3000"
-    restart: unless-stopped
+    # always (not unless-stopped) so FreeBSD's podman rc.d auto-starts it at boot
+    restart: always
 ```
+
+Save as `compose.yaml`, then run `podman-compose up -d`.
 
 ### AppJail Director
 **.env**:
@@ -69,7 +72,7 @@ services:
   immich-public-proxy:
     name: immich_public_proxy
     options:
-      - container: 'boot args:--pull'
+      - container: 'args:--pull'
       - expose: '3000:3000 proto:tcp'
     oci:
       user: root
@@ -87,10 +90,18 @@ services:
 
 ARG tag=latest
 
+OPTION container=boot
 OPTION overwrite=force
 OPTION from=ghcr.io/daemonless/immich-public-proxy:${tag}
 ```
-**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
+
+Save the files above, then run `appjail-director up`.
+
+
+> [!WARNING]
+> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
+>
+> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
 ### Podman CLI
 
@@ -104,7 +115,10 @@ podman run -d --name immich-public-proxy \
   ghcr.io/daemonless/immich-public-proxy:latest
 ```
 
+Save as `run.sh`, then run `sh run.sh`.
+
 ### AppJail
+
 
 ```bash
 appjail oci run -Pd \
@@ -119,7 +133,44 @@ appjail oci run -Pd \
   -e IPP_PORT= \
   ghcr.io/daemonless/immich-public-proxy:latest immich-public-proxy
 ```
-**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
+
+Save the files above, then run `sh run.sh`.
+
+
+> [!WARNING]
+> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
+>
+> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
+
+### Bastille
+
+> [!WARNING]
+> Bastille's OCI support is **experimental**. It requires `buildah` and shares the host network stack (`inherit`). Mount volumes with `--volume HOST JAIL`; without it, image-declared volumes are stored under `${bastille_volumesdir}/${jail}`.
+
+```yaml
+services:
+  immich-public-proxy:
+    name: immich-public-proxy
+    image: "ghcr.io/daemonless/immich-public-proxy:latest"
+    network:
+      - mode: host
+    environment:
+      - IMMICH_URL=http://your-internal-immich-server:2283
+      - PUBLIC_BASE_URL=https://your-proxy-url.com
+      - TZ=UTC
+      - IPP_PORT=
+```
+
+Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
+
+```bash
+bastille create -O \
+  --env IMMICH_URL=http://your-internal-immich-server:2283 \
+  --env PUBLIC_BASE_URL=https://your-proxy-url.com \
+  --env TZ=UTC \
+  --env IPP_PORT= \
+  immich-public-proxy ghcr.io/daemonless/immich-public-proxy:latest inherit
+```
 
 ### Ansible
 
@@ -138,6 +189,8 @@ appjail oci run -Pd \
     ports:
       - "3000:3000"
 ```
+
+Save as `immich-public-proxy-deploy.yaml`, then run `ansible-playbook immich-public-proxy-deploy.yaml`.
 
 Access at: `http://localhost:3000`
 
