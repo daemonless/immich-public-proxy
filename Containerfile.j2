@@ -3,19 +3,25 @@
 # Upstream: https://github.com/alangrainger/immich-public-proxy (AGPL-3.0)
 
 ARG BASE_VERSION=15
-ARG IPP_VERSION=v3.0.1
+# Empty = newest upstream release; set a tag (e.g. v3.4.0) to pin
+ARG IPP_VERSION=
+ARG UPSTREAM_URL="https://api.github.com/repos/alangrainger/immich-public-proxy/releases/latest"
 
 # ==========================================================================
 # Stage 1: Builder — compile server + client TypeScript (node22, no native deps)
 # ==========================================================================
 FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
 ARG IPP_VERSION
+ARG UPSTREAM_URL
 
 RUN pkg update && pkg install -y node22 npm-node22 git-lite && pkg clean -ay
 
 WORKDIR /build
-RUN git clone --depth 1 --branch ${IPP_VERSION} \
-    https://github.com/alangrainger/immich-public-proxy.git .
+RUN VERSION="${IPP_VERSION:-$(fetch -qo - "${UPSTREAM_URL}" | jq -r '.tag_name')}" && \
+    echo "Building Immich Public Proxy ${VERSION}" && \
+    git clone --depth 1 --branch "${VERSION}" \
+      https://github.com/alangrainger/immich-public-proxy.git . && \
+    echo "${VERSION#v}" > /version
 
 # The npm project root is app/, not the repo root.
 WORKDIR /build/app
@@ -29,8 +35,9 @@ RUN npm ci --omit=dev
 # ==========================================================================
 FROM ghcr.io/daemonless/base:${BASE_VERSION}
 ARG FREEBSD_ARCH=amd64
-ARG IPP_VERSION
 ARG PACKAGES="node22"
+ARG UPSTREAM_URL
+ARG UPSTREAM_JQ='.tag_name | sub("^v"; "")'
 
 LABEL org.opencontainers.image.title="Immich Public Proxy" \
       org.opencontainers.image.description="Share Immich photos and albums publicly without exposing the Immich instance itself." \
@@ -43,6 +50,9 @@ LABEL org.opencontainers.image.title="Immich Public Proxy" \
       io.daemonless.port="3000" \
       io.daemonless.healthcheck-url="http://localhost:3000/healthcheck" \
       io.daemonless.arch="${FREEBSD_ARCH}" \
+      io.daemonless.upstream-mode="source" \
+      io.daemonless.upstream-url="${UPSTREAM_URL}" \
+      io.daemonless.upstream-jq="${UPSTREAM_JQ}" \
       io.daemonless.packages="${PACKAGES}"
 
 RUN pkg update && pkg install -y ${PACKAGES} && \
@@ -51,10 +61,11 @@ RUN pkg update && pkg install -y ${PACKAGES} && \
 
 # Built app + production node_modules from the builder stage.
 COPY --from=builder --chown=bsd:bsd /build/app /app
+COPY --from=builder /version /app/version
 
 # Builder-stage COPY/npm lands as root:wheel with a restrictive umask; the
 # unprivileged bsd runtime user needs to read+traverse it.
-RUN chmod -R a+rX /app && echo "${IPP_VERSION}" > /app/version
+RUN chmod -R a+rX /app
 
 # s6 service + healthz
 COPY root/ /
