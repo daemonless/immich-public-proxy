@@ -7,6 +7,7 @@ Source: dbuild templates
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/immich-public-proxy/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/immich-public-proxy/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/immich-public-proxy?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/immich-public-proxy/commits)
+[![OCI Pulls](https://img.shields.io/docker/pulls/daemonless/immich-public-proxy?style=flat-square&label=OCI+Pulls&color=blue)](https://hub.docker.com/r/daemonless/immich-public-proxy)
 
 Share Immich photos and albums publicly without exposing the Immich instance itself.
 
