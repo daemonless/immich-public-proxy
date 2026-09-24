@@ -1,11 +1,11 @@
 {
-  "generated": "2026-09-23T19:45:10Z",
+  "generated": "2026-09-24T08:28:23Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
-      "app_version": "v3.0.1",
+      "app_version": "3.4.0",
       "arch": "amd64",
-      "generated": "2026-09-23T19:44:33Z",
+      "generated": "2026-09-24T08:27:20Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -496,12 +496,12 @@
           {
             "name": "body-parser",
             "purl": "",
-            "version": "1.20.5"
+            "version": "1.20.6"
           },
           {
             "name": "brace-expansion",
             "purl": "",
-            "version": "2.1.0"
+            "version": "2.1.4"
           },
           {
             "name": "buffer",
@@ -771,7 +771,7 @@
           {
             "name": "immich-public-proxy",
             "purl": "",
-            "version": "3.0.1"
+            "version": "3.4.0"
           },
           {
             "name": "inherits",
