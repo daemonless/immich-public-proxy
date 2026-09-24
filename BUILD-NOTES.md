@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Upstream** | `alangrainger/immich-public-proxy` @ `v3.0.1` (AGPL-3.0) |
+| **Upstream** | `alangrainger/immich-public-proxy`, latest release at build time (`IPP_VERSION` pins a tag) (AGPL-3.0) |
 | **Runtime** | node22 (no `engines` pin upstream; lowest node with no FreeBSD traps — no Temporal, no native addons) |
 | **Database** | none (stateless proxy, no persistence, no volumes) |
 | **Base** | `ghcr.io/daemonless/base:15` (service, s6) |
