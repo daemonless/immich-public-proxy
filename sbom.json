@@ -1,11 +1,11 @@
 {
-  "generated": "2026-09-24T08:28:23Z",
+  "generated": "2026-09-28T21:45:45Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
       "app_version": "3.4.0",
       "arch": "amd64",
-      "generated": "2026-09-24T08:27:20Z",
+      "generated": "2026-09-28T21:45:09Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
