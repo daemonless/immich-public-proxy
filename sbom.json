@@ -1,11 +1,11 @@
 {
-  "generated": "2026-09-29T09:51:25Z",
+  "generated": "2026-10-05T15:39:44Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
-      "app_version": "3.4.0",
+      "app_version": "3.4.1",
       "arch": "amd64",
-      "generated": "2026-09-29T09:50:43Z",
+      "generated": "2026-10-05T15:38:55Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -771,7 +771,7 @@
           {
             "name": "immich-public-proxy",
             "purl": "",
-            "version": "3.4.0"
+            "version": "3.4.1"
           },
           {
             "name": "inherits",

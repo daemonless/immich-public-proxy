@@ -104,45 +104,6 @@ Save the files above, then run `appjail-director up`.
 >
 > To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
-### Podman CLI
-
-```bash
-podman run -d --name immich-public-proxy \
-  -p 3000:3000 \
-  -e IMMICH_URL=http://your-internal-immich-server:2283 \
-  -e PUBLIC_BASE_URL=https://your-proxy-url.com \
-  -e TZ=UTC \
-  -e IPP_PORT= \
-  ghcr.io/daemonless/immich-public-proxy:latest
-```
-
-Save as `run.sh`, then run `sh run.sh`.
-
-### AppJail
-
-
-```bash
-appjail oci run -Pd \
-  -o overwrite=force \
-  -o container="args:--pull" \
-  -o virtualnet=":<random> default" \
-  -o nat \
-  -o expose="3000:3000 proto:tcp" \
-  -e IMMICH_URL=http://your-internal-immich-server:2283 \
-  -e PUBLIC_BASE_URL=https://your-proxy-url.com \
-  -e TZ=UTC \
-  -e IPP_PORT= \
-  ghcr.io/daemonless/immich-public-proxy:latest immich-public-proxy
-```
-
-Save the files above, then run `sh run.sh`.
-
-
-> [!WARNING]
-> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
->
-> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
-
 ### Bastille
 
 > [!WARNING]
@@ -162,36 +123,7 @@ services:
       - IPP_PORT=
 ```
 
-Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
-
-```bash
-bastille create -O \
-  --env IMMICH_URL=http://your-internal-immich-server:2283 \
-  --env PUBLIC_BASE_URL=https://your-proxy-url.com \
-  --env TZ=UTC \
-  --env IPP_PORT= \
-  immich-public-proxy ghcr.io/daemonless/immich-public-proxy:latest inherit
-```
-
-### Ansible
-
-```yaml
-- name: Deploy immich-public-proxy
-  containers.podman.podman_container:
-    name: immich-public-proxy
-    image: "ghcr.io/daemonless/immich-public-proxy:latest"
-    state: started
-    restart_policy: always
-    env:
-      IMMICH_URL: "http://your-internal-immich-server:2283"
-      PUBLIC_BASE_URL: "https://your-proxy-url.com"
-      TZ: "UTC"
-      IPP_PORT: ""
-    ports:
-      - "3000:3000"
-```
-
-Save as `immich-public-proxy-deploy.yaml`, then run `ansible-playbook immich-public-proxy-deploy.yaml`.
+Save as `bastille-compose.yml`, then run `bastille up`.
 
 Access at: `http://localhost:3000`
 
