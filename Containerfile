@@ -29,12 +29,18 @@ RUN VERSION="${IPP_VERSION:-$(fetch -qo - "${UPSTREAM_URL}" | jq -r '.tag_name')
       https://github.com/alangrainger/immich-public-proxy.git . && \
     echo "${VERSION#v}" > /version
 
-# The npm project root is app/, not the repo root.
-WORKDIR /build/app
-RUN npm ci && npx tsc && npx tsc -p tsconfig.client.json
+# 4.0 is an npm workspace: app/ imports @ipp/core from shared/, so install
+# and build from the root, as upstream's Dockerfile does.
+RUN npm ci --workspace=app && \
+    npm run build --workspace=shared --workspace=app
 
-# Production-only node_modules (all 8 deps are pure JS - no native addons).
-RUN npm ci --omit=dev
+# Production node_modules for app/ alone, the @ipp/core workspace link copied
+# in as a real folder (cp -L) so /app is self-contained.
+RUN rm -rf node_modules && \
+    npm ci --workspace=app --omit=dev && \
+    rm -rf node_modules/immich-public-proxy node_modules/immich-public-proxy-upload node_modules/.bin/immich-public-proxy* && \
+    rm -rf app/node_modules && cp -rL node_modules app/node_modules && \
+    rm -rf app/node_modules/@ipp/core/src app/node_modules/@ipp/core/tests app/dist/tsconfig.tsbuildinfo
 
 # ==========================================================================
 # Stage 2: Runtime
