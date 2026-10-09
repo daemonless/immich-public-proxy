@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-05T15:39:44Z",
+  "generated": "2026-10-09T23:09:35Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
-      "app_version": "3.4.1",
+      "app_version": "4.0.0",
       "arch": "amd64",
-      "generated": "2026-10-05T15:38:55Z",
+      "generated": "2026-10-09T23:09:00Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -42,7 +42,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-clibs",
-            "version": "15.1p2"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -56,7 +56,7 @@
               "BSD-3-Clause"
             ],
             "name": "FreeBSD-dhclient",
-            "version": "15.1"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -91,7 +91,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-libcasper",
-            "version": "15.1"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -154,7 +154,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-openssl-lib",
-            "version": "15.1p3"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -189,7 +189,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-runtime",
-            "version": "15.1p3"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -210,7 +210,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-utilities",
-            "version": "15.1p2"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -238,7 +238,7 @@
               "PD"
             ],
             "name": "FreeBSD-zoneinfo",
-            "version": "15.1p2"
+            "version": "15.1p4"
           },
           {
             "licenses": [
@@ -266,7 +266,7 @@
               "MPL20"
             ],
             "name": "ca_root_nss",
-            "version": "3.129"
+            "version": "3.130"
           },
           {
             "licenses": [
@@ -424,6 +424,11 @@
         "java": [],
         "node": [
           {
+            "name": "@ipp/core",
+            "purl": "",
+            "version": "4.0.0"
+          },
+          {
             "name": "@isaacs/cliui",
             "purl": "",
             "version": "8.0.2"
@@ -496,12 +501,12 @@
           {
             "name": "body-parser",
             "purl": "",
-            "version": "1.20.6"
+            "version": "1.20.8"
           },
           {
             "name": "brace-expansion",
             "purl": "",
-            "version": "2.1.4"
+            "version": "2.1.7"
           },
           {
             "name": "buffer",
@@ -686,7 +691,7 @@
           {
             "name": "express",
             "purl": "",
-            "version": "4.22.2"
+            "version": "4.22.3"
           },
           {
             "name": "fast-fifo",
@@ -771,7 +776,7 @@
           {
             "name": "immich-public-proxy",
             "purl": "",
-            "version": "3.4.1"
+            "version": "4.0.0"
           },
           {
             "name": "inherits",
@@ -896,7 +901,7 @@
           {
             "name": "object-inspect",
             "purl": "",
-            "version": "1.13.3"
+            "version": "1.13.4"
           },
           {
             "name": "on-finished",
@@ -976,12 +981,12 @@
           {
             "name": "proxy-addr",
             "purl": "",
-            "version": "2.0.7"
+            "version": "2.0.8"
           },
           {
             "name": "qs",
             "purl": "",
-            "version": "6.15.2"
+            "version": "6.16.0"
           },
           {
             "name": "queue-tick",
@@ -1046,12 +1051,12 @@
           {
             "name": "side-channel",
             "purl": "",
-            "version": "1.1.0"
+            "version": "1.1.1"
           },
           {
             "name": "side-channel-list",
             "purl": "",
-            "version": "1.0.0"
+            "version": "1.0.1"
           },
           {
             "name": "side-channel-map",
@@ -1175,12 +1180,12 @@
         "freebsd": 58,
         "go": 0,
         "java": 0,
-        "node": 148,
+        "node": 149,
         "php": 0,
         "python": 0,
         "ruby": 0,
         "rust": 0,
-        "total": 206
+        "total": 207
       }
     }
   }
