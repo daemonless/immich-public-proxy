@@ -39,7 +39,7 @@ services:
       - IMMICH_URL=http://your-internal-immich-server:2283  # URL of your (private) Immich instance, e.g. http://immich-server:2283
       - PUBLIC_BASE_URL=https://your-proxy-url.com  # Public base URL this proxy is served from, no trailing slash (optional - derived from the request hostname if unset)
       - TZ=UTC  # Timezone for the container
-      - IPP_PORT=  # Internal webserver port (default 3000)
+      # - IPP_PORT=  # Internal webserver port (default 3000)
     ports:
       - "3000:3000"
     # always (not unless-stopped) so FreeBSD's podman rc.d auto-starts it at boot
@@ -58,7 +58,6 @@ DIRECTOR_PROJECT=immich-public-proxy
 IMMICH_URL=http://your-internal-immich-server:2283
 PUBLIC_BASE_URL=https://your-proxy-url.com
 TZ=UTC
-IPP_PORT=
 ```
 
 **appjail-director.yml**:
@@ -81,7 +80,6 @@ services:
         - IMMICH_URL: !ENV '${IMMICH_URL}'
         - PUBLIC_BASE_URL: !ENV '${PUBLIC_BASE_URL}'
         - TZ: !ENV '${TZ}'
-        - IPP_PORT: !ENV '${IPP_PORT}'
 ```
 
 **Makejail**:
@@ -120,7 +118,6 @@ services:
       - IMMICH_URL=http://your-internal-immich-server:2283
       - PUBLIC_BASE_URL=https://your-proxy-url.com
       - TZ=UTC
-      - IPP_PORT=
 ```
 
 Save as `bastille-compose.yml`, then run `bastille up`.
