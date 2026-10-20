@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-19T12:16:12Z",
+  "generated": "2026-10-20T00:03:05Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
-      "app_version": "4.1.0",
+      "app_version": "4.1.1",
       "arch": "amd64",
-      "generated": "2026-10-19T12:15:37Z",
+      "generated": "2026-10-20T00:00:37Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -426,7 +426,7 @@
           {
             "name": "@ipp/core",
             "purl": "",
-            "version": "4.1.0"
+            "version": "4.1.1"
           },
           {
             "name": "@isaacs/cliui",
@@ -776,7 +776,7 @@
           {
             "name": "immich-public-proxy",
             "purl": "",
-            "version": "4.1.0"
+            "version": "4.1.1"
           },
           {
             "name": "inherits",
