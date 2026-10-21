@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-20T00:03:05Z",
+  "generated": "2026-10-21T19:43:49Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
       "app_version": "4.1.1",
       "arch": "amd64",
-      "generated": "2026-10-20T00:00:37Z",
+      "generated": "2026-10-21T19:43:06Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -189,7 +189,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-runtime",
-            "version": "15.1p4"
+            "version": "15.1p5"
           },
           {
             "licenses": [
@@ -238,7 +238,7 @@
               "PD"
             ],
             "name": "FreeBSD-zoneinfo",
-            "version": "15.1p4"
+            "version": "15.1p5"
           },
           {
             "licenses": [
@@ -266,7 +266,7 @@
               "MPL20"
             ],
             "name": "ca_root_nss",
-            "version": "3.130"
+            "version": "3.131"
           },
           {
             "licenses": [
