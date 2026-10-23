@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-21T19:43:49Z",
+  "generated": "2026-10-23T10:07:52Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
       "app_version": "4.1.1",
       "arch": "amd64",
-      "generated": "2026-10-21T19:43:06Z",
+      "generated": "2026-10-23T10:07:03Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -277,13 +277,6 @@
           },
           {
             "licenses": [
-              "ISCL"
-            ],
-            "name": "execline",
-            "version": "2.9.8.1"
-          },
-          {
-            "licenses": [
               "ICU"
             ],
             "name": "icu",
@@ -377,25 +370,11 @@
           },
           {
             "licenses": [
-              "ISCL"
-            ],
-            "name": "s6",
-            "version": "2.14.0.1"
-          },
-          {
-            "licenses": [
               "MIT",
               "APACHE20"
             ],
             "name": "simdjson",
-            "version": "5.0.1"
-          },
-          {
-            "licenses": [
-              "ISCL"
-            ],
-            "name": "skalibs",
-            "version": "2.14.5.1"
+            "version": "5.0.5"
           },
           {
             "licenses": [
@@ -1177,7 +1156,7 @@
       "source": "upstream",
       "summary": {
         "dotnet": 0,
-        "freebsd": 58,
+        "freebsd": 55,
         "go": 0,
         "java": 0,
         "node": 149,
@@ -1185,7 +1164,7 @@
         "python": 0,
         "ruby": 0,
         "rust": 0,
-        "total": 207
+        "total": 204
       }
     }
   }
