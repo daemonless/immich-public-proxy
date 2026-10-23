@@ -4,4 +4,4 @@
 # (only /healthcheck pings Immich, lazily, per request).
 cd /app || exit 1
 echo "[INFO] Starting immich-public-proxy on 0.0.0.0:${IPP_PORT:-3000}..."
-exec s6-setuidgid bsd node dist/index.js
+exec node dist/index.js

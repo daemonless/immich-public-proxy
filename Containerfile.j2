@@ -10,7 +10,7 @@ ARG UPSTREAM_URL="https://api.github.com/repos/alangrainger/immich-public-proxy/
 # ==========================================================================
 # Stage 1: Builder — compile server + client TypeScript (node22, no native deps)
 # ==========================================================================
-FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
+FROM ghcr.io/daemonless/base-exec:${BASE_VERSION} AS builder
 ARG IPP_VERSION
 ARG UPSTREAM_URL
 
@@ -39,7 +39,7 @@ RUN rm -rf node_modules && \
 # ==========================================================================
 # Stage 2: Runtime
 # ==========================================================================
-FROM ghcr.io/daemonless/base:${BASE_VERSION}
+FROM ghcr.io/daemonless/base-exec:${BASE_VERSION}
 ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="node22"
 ARG UPSTREAM_URL
@@ -75,7 +75,11 @@ RUN chmod -R a+rX /app
 
 # s6 service + healthz
 COPY root/ /
-RUN chmod +x /etc/services.d/immich-public-proxy/run /healthz
+RUN chmod +x /daemonless/libexec/immich-public-proxy
+
+CMD ["/daemonless/libexec/immich-public-proxy"]
+
+RUN chmod +x /healthz
 
 WORKDIR /app
 ENV NODE_ENV=production
