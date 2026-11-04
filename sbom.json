@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-23T18:20:02Z",
+  "generated": "2026-11-04T12:43:39Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
       "app_version": "4.1.2",
       "arch": "amd64",
-      "generated": "2026-10-23T18:07:54Z",
+      "generated": "2026-11-04T12:43:05Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -189,7 +189,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-runtime",
-            "version": "15.1p5"
+            "version": "15.1p6"
           },
           {
             "licenses": [
@@ -252,7 +252,7 @@
               "MIT"
             ],
             "name": "brotli",
-            "version": "1.2.0,1"
+            "version": "1.2.1,1"
           },
           {
             "licenses": [
@@ -266,7 +266,7 @@
               "MPL20"
             ],
             "name": "ca_root_nss",
-            "version": "3.131"
+            "version": "3.132"
           },
           {
             "licenses": [
@@ -352,7 +352,7 @@
               "MIT"
             ],
             "name": "node22",
-            "version": "22.23.2_1"
+            "version": "22.23.4"
           },
           {
             "licenses": [
@@ -381,7 +381,7 @@
               "PD"
             ],
             "name": "sqlite3",
-            "version": "3.53.4,1"
+            "version": "3.54.1,1"
           },
           {
             "licenses": [
