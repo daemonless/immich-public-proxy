@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-10T19:42:50Z",
+  "generated": "2026-11-16T22:52:16Z",
   "image": "immich-public-proxy",
   "tags": {
     "latest": {
-      "app_version": "4.1.2",
+      "app_version": "4.2.0",
       "arch": "amd64",
-      "generated": "2026-11-10T19:42:12Z",
+      "generated": "2026-11-16T22:51:39Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -366,7 +366,7 @@
               "BSD2CLAUSE"
             ],
             "name": "pkg",
-            "version": "2.8.4"
+            "version": "2.9.2"
           },
           {
             "licenses": [
@@ -405,7 +405,7 @@
           {
             "name": "@ipp/core",
             "purl": "",
-            "version": "4.1.2"
+            "version": "4.2.0"
           },
           {
             "name": "@isaacs/cliui",
@@ -755,7 +755,7 @@
           {
             "name": "immich-public-proxy",
             "purl": "",
-            "version": "4.1.2"
+            "version": "4.2.0"
           },
           {
             "name": "inherits",
